@@ -1,2 +1,3 @@
-# another_simple_task_tracker
-Task tracker projet for education
+# Another Simple Task Tracker
+## Данное приложение - простой трекер задач, создаваемый в учебных целях
+Каталог doc/ - документация по применению, описание архитектуры, технологических рещшений итд
