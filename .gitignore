@@ -201,6 +201,9 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+# Cursor context directory (AI assistant context)
+.cursor/context/
+
 # Marimo
 marimo/_static/
 marimo/_lsp/
