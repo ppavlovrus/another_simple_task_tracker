@@ -5,7 +5,7 @@ from typing import Optional
 
 from fastapi import FastAPI
 
-from config import (
+from ..config import (
     DATABASE_URL,
     DB_POOL_MIN_SIZE,
     DB_POOL_MAX_SIZE,
@@ -55,4 +55,3 @@ def get_pool() -> Optional[asyncpg.Pool]:
         Database connection pool or None if not initialized
     """
     return db_pool
-

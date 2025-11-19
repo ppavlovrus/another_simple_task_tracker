@@ -3,9 +3,14 @@ import os
 from typing import Optional
 
 # Database configuration
+DATABASE_NAME: str = os.getenv("DATABASE_NAME", "task_tracker")
+DATABASE_USER: str = os.getenv("DATABASE_USER", "postgres")
+DATABASE_PASSWORD: str = os.getenv("DATABASE_PASSWORD", "")
+DATABASE_HOST: str = os.getenv("DATABASE_HOST", "localhost")
+DATABASE_PORT: str = os.getenv("DATABASE_PORT", "5432")
 DATABASE_URL: str = os.getenv(
-    "DATABASE_URL",
-    "postgresql://user:password@localhost/task_tracker"
+    f'DATABASE_URL',
+    f'postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}'
 )
 
 # Connection pool settings
