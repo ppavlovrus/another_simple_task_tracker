@@ -1,0 +1,26 @@
+[tool.pytest.ini_options]
+# Default pytest options: enable coverage for app code in src/, branch coverage, and a readable terminal report
+addopts = "-q --cov=src --cov-branch --cov-report=term-missing"
+# Ensure Python can import packages from src/
+pythonpath = ["src"]
+
+[tool.coverage.run]
+# Tell coverage.py what to measure by default
+branch = true
+source = ["src"]
+omit = [
+  "test/*",
+  "alembic/*",
+  "examples/*",
+  "venv/*",
+]
+
+[tool.coverage.report]
+# Improve readability of coverage reports
+show_missing = true
+skip_empty = true
+exclude_lines = [
+  # Pragmas and patterns to ignore
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+]

@@ -66,6 +66,9 @@ async def create_user(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"User with this username or email already exists: {e}",
         )
+    except HTTPException:
+        # Preserve previously raised HTTP errors
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -95,28 +98,38 @@ async def get_user(
     Raises:
         HTTPException: If user not found
     """
-    row = await conn.fetchrow(
-        """
-        SELECT id, username, email, created_at, last_login
-        FROM "user"
-        WHERE id = $1
-        """,
-        user_id,
-    )
-
-    if not row:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with ID {user_id} not found",
+    try:
+        row = await conn.fetchrow(
+            """
+            SELECT id, username, email, created_at, last_login
+            FROM "user"
+            WHERE id = $1
+            """,
+            user_id,
         )
 
-    return UserResponse(
-        id=row["id"],
-        username=row["username"],
-        email=row["email"],
-        created_at=row["created_at"],
-        last_login=row["last_login"],
-    )
+        if not row:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"User with ID {user_id} not found",
+            )
+
+        return UserResponse(
+            id=row["id"],
+            username=row["username"],
+            email=row["email"],
+            created_at=row["created_at"],
+            last_login=row["last_login"],
+        )
+    except HTTPException:
+        # Preserve expected HTTP statuses like 404
+        raise
+    except Exception as e:
+        # Convert unexpected errors to 500 for stable API contract
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal server error: {e}",
+        )
 
 
 @router.put(
@@ -214,6 +227,9 @@ async def update_user(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"User with this username or email already exists: {e}",
         )
+    except HTTPException:
+        # Preserve previously raised HTTP errors (e.g., 400 for missing fields, 404 not found)
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -264,6 +280,9 @@ async def delete_user(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Cannot delete user: {e}",
         )
+    except HTTPException:
+        # Keep previously raised 404 not found as-is
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

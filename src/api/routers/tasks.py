@@ -257,6 +257,9 @@ async def update_task(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Unique constraint violation: {e}",
         )
+    except HTTPException:
+        # Preserve already formed HTTPException (e.g., 404 not found)
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -306,6 +309,9 @@ async def delete_task(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Invalid foreign key reference: {e}",
         )
+    except HTTPException:
+        # Preserve already formed HTTPException (e.g., 404 not found)
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

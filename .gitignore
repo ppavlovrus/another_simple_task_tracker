@@ -210,3 +210,6 @@ marimo/_lsp/
 __marimo__/
 
 docs/
+alembic/versions/README.md
+src/database/__pycache__
+examples/
