@@ -20,6 +20,7 @@ app = FastAPI(
 # Include routers
 app.include_router(tasks.router)
 app.include_router(users.router)
+app.include_router(users.tags)
 
 
 # Application entry point
