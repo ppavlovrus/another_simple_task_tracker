@@ -37,15 +37,14 @@ async def create_task(
         # Insert task into database
         row = await conn.fetchrow(
             """
-            INSERT INTO tasks (title, description, status_id, creator_id, assignee_id, deadline_start, deadline_end)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
-            RETURNING id, title, description, status_id, creator_id, assignee_id, deadline_start, deadline_end, created_at, updated_at
+            INSERT INTO task (title, description, status_id, creator_id, deadline_start, deadline_end)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING id, title, description, status_id, creator_id, deadline_start, deadline_end, created_at, updated_at
             """,
             task.title,
             task.description,
             task.status_id,
             task.creator_id,
-            task.assignee_id,
             task.deadline_start,
             task.deadline_end,
         )
@@ -62,7 +61,6 @@ async def create_task(
             description=row["description"],
             status_id=row["status_id"],
             creator_id=row["creator_id"],
-            assignee_id=row["assignee_id"],
             deadline_start=row["deadline_start"],
             deadline_end=row["deadline_end"],
             created_at=row["created_at"],
@@ -111,9 +109,9 @@ async def get_task(
     # Fetch task from database
     task_row = await conn.fetchrow(
         """
-        SELECT id, title, description, status_id, creator_id, assignee_id,
+        SELECT id, title, description, status_id, creator_id,
                deadline_start, deadline_end, created_at, updated_at
-        FROM tasks
+        FROM task
         WHERE id = $1
         """,
         task_id,
@@ -131,7 +129,6 @@ async def get_task(
         description=task_row["description"],
         status_id=task_row["status_id"],
         creator_id=task_row["creator_id"],
-        assignee_id=task_row["assignee_id"],
         deadline_start=task_row["deadline_start"],
         deadline_end=task_row["deadline_end"],
         created_at=task_row["created_at"],
@@ -169,7 +166,6 @@ async def update_task(
             task.title is not None,
             task.description is not None,
             task.status_id is not None,
-            task.assignee_id is not None,
             task.deadline_start is not None,
             task.deadline_end is not None,
         ]):
@@ -198,11 +194,6 @@ async def update_task(
             values.append(task.status_id)
             param_index += 1
 
-        if task.assignee_id is not None:
-            update_fields.append(f"assignee_id = ${param_index}")
-            values.append(task.assignee_id)
-            param_index += 1
-
         if task.deadline_start is not None:
             update_fields.append(f"deadline_start = ${param_index}")
             values.append(task.deadline_start)
@@ -221,10 +212,10 @@ async def update_task(
 
         # Build and execute query
         query = f"""
-            UPDATE tasks
+            UPDATE task
             SET {', '.join(update_fields)}
             WHERE id = ${param_index}
-            RETURNING id, title, description, status_id, creator_id, assignee_id, deadline_start, deadline_end, created_at, updated_at
+            RETURNING id, title, description, status_id, creator_id, deadline_start, deadline_end, created_at, updated_at
         """
 
         row = await conn.fetchrow(query, *values)
@@ -241,7 +232,6 @@ async def update_task(
             description=row["description"],
             status_id=row["status_id"],
             creator_id=row["creator_id"],
-            assignee_id=row["assignee_id"],
             deadline_start=row["deadline_start"],
             deadline_end=row["deadline_end"],
             created_at=row["created_at"],
@@ -293,7 +283,7 @@ async def delete_task(
         # Delete task from database and check if it existed
         deleted_id = await conn.fetchval(
             """
-            DELETE FROM tasks WHERE id = $1
+            DELETE FROM task WHERE id = $1
             RETURNING id
             """,
             task_id,

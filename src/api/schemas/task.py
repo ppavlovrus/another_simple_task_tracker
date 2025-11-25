@@ -12,7 +12,6 @@ class TaskCreate(BaseModel):
     description: Optional[str] = None
     status_id: int
     creator_id: int
-    assignee_id: Optional[int] = None  # Single assignee (matches DB schema)
     deadline_start: Optional[date] = None
     deadline_end: Optional[date] = None
 
@@ -23,7 +22,6 @@ class TaskUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     status_id: Optional[int] = None
-    assignee_id: Optional[int] = None
     deadline_start: Optional[date] = None
     deadline_end: Optional[date] = None
 
@@ -36,7 +34,6 @@ class TaskResponse(BaseModel):
     description: Optional[str]
     status_id: int
     creator_id: int
-    assignee_id: Optional[int]
     deadline_start: Optional[date]
     deadline_end: Optional[date]
     created_at: datetime

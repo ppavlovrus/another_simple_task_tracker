@@ -1,0 +1,37 @@
+# Docker Compose configuration for integration testing.
+# This file provides an easy way to run the Task Tracker API in a container
+# that connects to a PostgreSQL database on the host machine.
+
+version: '3.8'
+
+services:
+  task-tracker-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-tracker-api
+    ports:
+      - "8000:8000"
+    environment:
+      # Database connection to host machine
+      # On Mac/Windows: use host.docker.internal
+      # On Linux: you may need to use --network host
+      DATABASE_HOST: host.docker.internal
+      DATABASE_PORT: 5432
+      DATABASE_NAME: task_tracker
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: qwerty
+      # Connection pool settings
+      DB_POOL_MIN_SIZE: 5
+      DB_POOL_MAX_SIZE: 10
+      DB_POOL_COMMAND_TIMEOUT: 60
+    # For Linux, uncomment the following line and remove host.docker.internal
+    # network_mode: host
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+

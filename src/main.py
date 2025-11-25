@@ -5,7 +5,7 @@ This module initializes the FastAPI application and includes all API routers.
 
 from fastapi import FastAPI
 
-from api.routers import tasks, users
+from api.routers import attachments, tags, tasks, users
 from database.pool import lifespan
 
 
@@ -20,7 +20,8 @@ app = FastAPI(
 # Include routers
 app.include_router(tasks.router)
 app.include_router(users.router)
-app.include_router(users.tags)
+app.include_router(tags.router)
+app.include_router(attachments.router)
 
 
 # Application entry point

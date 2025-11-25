@@ -204,6 +204,9 @@ cython_debug/
 # Cursor context directory (AI assistant context)
 .cursor/context/
 
+# AI context directory (project context for AI assistant)
+.ai-context/
+
 # Marimo
 marimo/_static/
 marimo/_lsp/
