@@ -36,3 +36,4 @@ def downgrade() -> None:
         WHERE name IN ('To Do', 'In Progress', 'Done', 'Cancelled')
     """)
 
+

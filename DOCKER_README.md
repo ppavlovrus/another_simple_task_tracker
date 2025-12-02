@@ -56,3 +56,4 @@ docker run -e DATABASE_PASSWORD=mypassword ...
 См. [docs/docker_integration_testing.md](docs/docker_integration_testing.md)
 
 
+
