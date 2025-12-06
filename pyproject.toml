@@ -1,3 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "another-simple-task-tracker"
+version = "0.1.0"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [tool.pytest.ini_options]
 # Default pytest options: enable coverage for app code in src/, branch coverage, and a readable terminal report
 addopts = "-q --cov=src --cov-branch --cov-report=term-missing"

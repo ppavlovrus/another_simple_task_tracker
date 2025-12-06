@@ -1,9 +1,8 @@
 """FastAPI dependencies."""
 import asyncpg
-from fastapi import Depends, HTTPException, status
-from typing import Annotated
+from fastapi import HTTPException, status
 
-from database.pool import get_pool
+from application.services import get_pool
 
 
 async def get_db_connection() -> asyncpg.Connection:
