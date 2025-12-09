@@ -1,6 +1,6 @@
 """Database models for Alembic migrations."""
 
-from application.services import Base
+from database.models import Base
 
 __all__ = ["Base"]
 

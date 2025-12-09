@@ -119,6 +119,7 @@ class Task(Base):
     assignees = relationship("User", secondary=task_assignee, back_populates="assigned_tasks")
     tags = relationship("Tag", secondary=task_tag, back_populates="tasks")
     attachments = relationship("Attachment", back_populates="task", cascade="all, delete-orphan")
+    comments = relationship("Comment", back_populates="task", cascade="all, delete-orphan")
 
 
 class Attachment(Base):
@@ -137,4 +138,16 @@ class Attachment(Base):
     # Relationships
     task = relationship("Task", back_populates="attachments")
 
+class Comment(Base):
+    """Comment model."""
+    __tablename__ = "comment"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    task_id = Column(Integer, ForeignKey("task.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    content = Column(Text, nullable=False)
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.now(), onupdate=func.now())
+
+    #Relationship
+    task = relationship("Task", back_populates="comments")
 

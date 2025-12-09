@@ -8,6 +8,7 @@ version = "0.1.0"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["domain*"]
 
 [tool.pytest.ini_options]
 # Default pytest options: enable coverage for app code in src/, branch coverage, and a readable terminal report

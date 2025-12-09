@@ -18,7 +18,19 @@ from alembic import context
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from config import DATABASE_URL
-from application.services import Base
+from database.models import Base
+
+# Import all models so Alembic can detect them for autogenerate
+# This ensures all models are registered with Base.metadata
+from database.models import (  # noqa: F401
+    User,
+    AuthSession,
+    TaskStatus,
+    Tag,
+    Task,
+    Attachment,
+    Comment,
+)
 
 # This is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
