@@ -74,27 +74,3 @@ class Task:
 
     def can_be_edited_by(self, user_id: int) -> bool:
         return self.creator_id == user_id
-
-    def add_assignee(self, user: "User") -> None:
-        if user not in self.assignees:
-            self.assignees.append(user)
-
-    def remove_assignee(self, user: "User") -> None:
-        if user in self.assignees:
-            self.assignees.remove(user)
-
-    def add_attachment(self, attachment: "Attachment") -> None:
-        if attachment not in self.attachments:
-            self.attachments.append(attachment)
-
-    def remove_attachment(self, attachment: "Attachment") -> None:
-        if attachment in self.attachments:
-            self.attachments.remove(attachment)
-
-    def add_tag(self, tag: "Tag") -> None:
-        if tag not in self.tags:
-            self.tags.append(tag)
-
-    def remove_tag(self, tag: "Tag") -> None:
-        if tag in self.tags:
-            self.tags.remove(tag)
