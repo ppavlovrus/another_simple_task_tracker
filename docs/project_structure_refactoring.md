@@ -139,7 +139,7 @@ import asyncpg
 from fastapi import Depends, HTTPException, status
 from typing import Annotated
 
-from database import get_pool
+from application.services import get_pool
 
 
 async def get_db_connection() -> asyncpg.Connection:
@@ -447,7 +447,7 @@ async def create_user(
 from fastapi import FastAPI
 
 from api.routers import tasks, users
-from database import lifespan
+from application.services import lifespan
 
 # FastAPI application initialization
 app = FastAPI(
@@ -460,7 +460,6 @@ app = FastAPI(
 # Include routers
 app.include_router(tasks.router)
 app.include_router(users.router)
-
 
 # Application entry point
 if __name__ == "__main__":
